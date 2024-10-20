@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet Map with Search</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <style>
+        #map { height: 500px; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script>
+         const V = 26;
+
+         let longitude = 38.1234;
+         let latitude = 26.5678;
+         let postcode = createPostcodeFromCoordinates (longitude, latitude);
+
+         let coordinates = createCoordinatesFromPostcode(postcode);
+         //location
+
+
+        // Create the map and set the view to a specific location and zoom level
+        var map = L.map('map').setView([longitude, -latitude], 13);
+
+        // Add a tile layer to the map (OpenStreetMap here)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add a marker to the map at the specified location
+        var marker = L.marker([longitude, latitude], {draggable: true}).addTo(map);
+
+        // Add a popup to the marker
+        marker.bindPopup(postcode).openPopup();
+
+        // Add a search control to the map
+        L.Control.geocoder().addTo(map);
+
+        
+
+
+        function convertTo2Digit(coordinates) {
+    switch (coordinates) {
+        case 4122: return 11;
+        case 4123: return 12;
+        case 4124: return 13;
+        case 4125: return 14;
+        case 4126: return 15;
+        case 4022: return 2;  // Thessaloniki
+        case 4023: return 17;
+        case 4024: return 3;  // Kavala
+        case 4025: return 4;  // Alexandroupoli
+        case 4026: return 20;
+        case 3919: return 21;
+        case 3920: return 6;  // Ioannina
+        case 3921: return 23;
+        case 3922: return 5;  // Larisa Volos
+        case 3923: return 25;
+        case 3924: return 26;
+        case 3925: return 27;
+        case 3926: return 268;
+        case 3819: return 29;
+        case 3820: return 30;
+        case 3821: return 7;  // Patra Agrinio
+        case 3822: return 32;
+        case 3823: return 33;
+        case 3824: return 34;
+        case 3825: return 35;
+        case 3826: return 36;
+        case 3827: return 37;
+        case 3719: return 38;
+        case 3720: return 39;
+        case 3721: return 40;
+        case 3722: return 41;
+        case 3723: return 1;  // Athens area make blank
+        case 3724: return 43;
+        case 3725: return 8;  // Cyclades
+        case 3726: return 45;
+        case 3727: return 46;
+        case 3619: return 47;
+        case 3620: return 48;
+        case 3621: return 49;
+        case 3622: return 50;
+        case 3623: return 51;
+        case 3624: return 52;
+        case 3625: return 53;
+        case 3626: return 54;
+        case 3627: return 55;
+        case 3628: return 56;
+        case 3519: return 57;
+        case 3520: return 58;
+        case 3521: return 59;
+        case 3522: return 60;
+        case 3523: return 61;
+        case 3524: return 10; // Chania
+        case 3525: return 9;  // Heraklion
+        case 3526: return 64;
+        case 3527: return 65;
+        case 3528: return 66;
+        case 3529: return 67;
+        case 3419: return 68;
+        case 3420: return 69;
+        case 3421: return 70;
+        case 3422: return 71;
+        case 3423: return 72;
+        case 3424: return 73;
+        case 3425: return 74;
+        case 3426: return 75;
+        case 3427: return 76;
+        case 3428: return 77;
+        case 3429: return 78;
+        case 3629: return 79;
+        default: return -1;
+    }
+}
+
+function unconvertCoordinatesToNumber(coordinates) {
+    switch (coordinates) {
+        case 1: return 3723; // Athens
+        case 2: return 4022; // Thessaloniki
+        case 3: return 4024; // Kavala
+        case 4: return 4025; // Alexandroupoli
+        case 5: return 3922; // Larisa Volos
+        case 6: return 3920; // Ioannina
+        case 7: return 3821; // Patra Agrinio
+        case 8: return 3725; // Cyclades
+        case 9: return 3525; // Heraklion
+        case 10: return 3524; // Chania
+        case 11: return 4122;
+        case 12: return 4123;
+        case 13: return 4124;
+        case 14: return 4125;
+        case 15: return 4126;
+        case 17: return 4023;
+        case 19: return 4025;
+        case 20: return 4026;
+        case 21: return 3919;
+        case 23: return 3921;
+        case 25: return 3923;
+        case 26: return 3924;
+        case 27: return 3925;
+        case 28: return 3926;
+        case 29: return 3819;
+        case 30: return 3820;
+        case 32: return 3822;
+        case 33: return 3823;
+        case 34: return 3824;
+        case 35: return 3825;
+        case 36: return 3826;
+        case 37: return 3827;
+        case 38: return 3719;
+        case 39: return 3720;
+        case 40: return 3721;
+        case 41: return 3722;
+        case 43: return 3724;
+        case 45: return 3726;
+        case 46: return 3727;
+        case 47: return 3619;
+        case 48: return 3620;
+        case 49: return 3621;
+        case 50: return 3622;
+        case 51: return 3623;
+        case 52: return 3624;
+        case 53: return 3625;
+        case 54: return 3626;
+        case 55: return 3627;
+        case 56: return 3628;
+        case 79: return 3629;
+        case 57: return 3519;
+        case 58: return 3520;
+        case 59: return 3521;
+        case 60: return 3522;
+        case 61: return 3523;
+        case 64: return 3526;
+        case 65: return 3527;
+        case 66: return 3528;
+        case 67: return 3529;
+        case 68: return 3419;
+        case 69: return 3420;
+        case 70: return 3421;
+        case 71: return 3422;
+        case 72: return 3423;
+        case 73: return 3424;
+        case 74: return 3425;
+        case 75: return 3426;
+        case 76: return 3427;
+        case 77: return 3428;
+        case 78: return 3429;
+        default: return 0;
+    }
+}
+function createPostcodeFromCoordinates(longitude, latitude) {
+    console.log(`long = ${longitude} latitude = ${latitude}`);
+
+    let longitude1 ='';
+    let latitude1= '';
+
+     longitude1 = longitude;
+     latitude1 = latitude;
+    
+    let concatLongLatitude = String(longitude).substr(0, 2) + String(latitude).substr(0, 2);
+    console.log(concatLongLatitude);
+    let firstBit = convertTo2Digit(parseInt(concatLongLatitude));
+    
+    if (firstBit === -1) {
+        console.log("Coordinates out of Greece range, please check");
+        return null;
+    }
+    
+    let firstBitStr = firstBit.toString();
+    let numberStr = String(longitude).substr(3, 7) + String(latitude).substr(3, 7);
+    let heptadecimalNumber = toBase28(numberStr); // To postcode
+    
+    // if length is not 8 then we have missing 0 and need to be replaced
+    if (heptadecimalNumber.length < 6) {
+        let str = '0'.repeat(6 - heptadecimalNumber.length);
+        heptadecimalNumber = str + heptadecimalNumber;
+    }
+    
+    let postcode = `${firstBitStr}-${heptadecimalNumber}`;
+    console.log(postcode);
+    
+    return postcode;
+}
+function createCoordinatesFromPostcode(postcode) {
+    let locationStr = "";
+    let locationOfDash = postcode.indexOf("-");
+    
+    // get the suffix
+    locationStr = String(postcode).substr(locationOfDash + 1);
+    
+    // get the postfix
+    let firstBitStr = String(postcode).substr(0, locationOfDash);
+    let firstBit = parseInt(firstBitStr);
+    
+    // from postcode to coordinates format
+    let decimalNumber = fromBase28(locationStr);
+    console.log(decimalNumber);
+    
+    let decimalNumberStr = decimalNumber.toString();
+    
+    // if length is not 8 then we have missing 0 and need to be replaced.
+    if (decimalNumberStr.length < 8) {
+        let str = '0'.repeat(8 - decimalNumberStr.length);
+        decimalNumberStr = str + decimalNumberStr;
+    }
+    
+    // convert the 2 digit postfix into 4
+    firstBit = unconvertCoordinatesToNumber(firstBit);
+    firstBitStr = firstBit.toString();
+    
+    console.log(decimalNumberStr.substr(5, 4));
+    
+    let result = String(firstBitStr).substr(0, 2) + "." + String(decimalNumberStr).substr(0, 4) + " " + String(firstBitStr).substr(2, 2) + "." + String(decimalNumberStr).substr(4, 4);
+    let resuts2 = String(firstBitStr).substr(2, 2) ;
+    let results3 = "." + String(decimalNumberStr).substr(4, 4);
+    return result;
+}
+
+
+
+
+
+
+function toBase28(number) {
+    const digits = '0123456789ABEZHIKMNXPSTY.+';
+    let result = '';
+    
+    while (number > 0) {
+        const remainder = number % V;
+        result = digits[remainder] + result;
+        number = Math.floor(number / V);
+    }
+    
+    return result || '0'; // Handles case where number is 0
+}
+
+function fromBase28(base28String) {
+    const digits = '0123456789ABEZHIKMNXPSTY.+';
+    let number = 0;
+
+    for (let i = 0; i < base28String.length; i++) {
+        const digitValue = digits.indexOf(base28String[i]);
+        if (digitValue === -1) {
+            throw new Error('Invalid character in base-V string.');
+        }
+        number = number * V + digitValue;
+    }
+
+    return number;
+}
+
+
+
+    </script>
+</body>
+</html>
