@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <style>
-        #map { height: 500px; }
+        #map { height: 1000px; }
     </style>
 </head>
 <body>
@@ -18,8 +18,8 @@
     <script>
          const V = 26;
 
-         let longitude = 38.1234;
-         let latitude = 26.5678;
+         let longitude = 39.1234;
+         let latitude = 24.5678;
          let postcode = createPostcodeFromCoordinates (longitude, latitude);
 
          let coordinates = createCoordinatesFromPostcode(postcode);
@@ -27,7 +27,7 @@
 
 
         // Create the map and set the view to a specific location and zoom level
-        var map = L.map('map').setView([longitude, -latitude], 13);
+        var map = L.map('map').setView([longitude, -latitude], 9);
 
         // Add a tile layer to the map (OpenStreetMap here)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -43,10 +43,21 @@
         // Add a search control to the map
         L.Control.geocoder().addTo(map);
 
+        // Add a dragend event listener to the marker
+        marker.on('dragend', function(e) {
+            let marker = e.target;
+            let position = marker.getLatLng();
+            //alert("PostCode: " + position);
+            longitude = position.lng;
+            latitude = position.lat;
+            let postcode = createPostcodeFromCoordinates (latitude,longitude );
+            alert("PostCode: " + postcode);
+        });
+
         
 
 
-        function convertTo2Digit(coordinates) {
+    function convertTo2Digit(coordinates) {
     switch (coordinates) {
         case 4122: return 11;
         case 4123: return 12;
@@ -215,7 +226,7 @@ function createPostcodeFromCoordinates(longitude, latitude) {
     }
     
     let firstBitStr = firstBit.toString();
-    let numberStr = String(longitude).substr(3, 7) + String(latitude).substr(3, 7);
+    let numberStr = String(longitude).substr(3, 4) + String(latitude).substr(3, 4);
     let heptadecimalNumber = toBase28(numberStr); // To postcode
     
     // if length is not 8 then we have missing 0 and need to be replaced
